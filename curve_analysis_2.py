@@ -3,8 +3,8 @@ from pylasdev import *
 
 # Simple test with full LAS output for LAS reader
 
-# file = "timur/2007.las" # bashneft cp866 # 11
-file = "timur/20-11-2012.las"
+file = "timur/2007.las" # bashneft cp866 # 11
+# file = "timur/20-11-2012.las"
 
 las_info = read_las_file(file)
 
