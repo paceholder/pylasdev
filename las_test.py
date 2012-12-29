@@ -24,9 +24,9 @@ test_files = [
 
 	"test_data/petrel2.0.las", 		# 8 -OK
 
-    "test_data/5_1.las",    # andrey converter # 9 - OK
-    "test_data/4ALS.las",   # nadezhdin's output # 10 - OK
-    "test_data/1475IBK3.las" # bashneft cp866 # 11
+	"test_data/5_1.las",    # andrey converter # 9 - OK
+	"test_data/4ALS.las",   # nadezhdin's output # 10 - OK
+	"test_data/1475IBK3.las" # bashneft cp866 # 11
 
 #	"test_data/comment_test.las",
 
@@ -36,7 +36,7 @@ test_files = [
 
 ]
 
-file = test_files[4]
+file = test_files[8]
 
 print "Reading file ", file, " ..."
 
@@ -58,7 +58,7 @@ else:
 
 	print "=== Parameters:"
 	for key in las_info['parameters'].keys():
-		print "  ", [key], [las_info['parameters'][key]]
+		print "  ", key, [key], [las_info['parameters'][key]]
 
 	print "=== Curves:"
 	for k in xrange(len(las_info['curves_order'])):
@@ -66,7 +66,7 @@ else:
 
 	print "=== Logs:"
 	for key_ordered in las_info['curves_order']:
-		print "  ", [key_ordered], [las_info['logs'][key_ordered]]
+		print "  ",  key_ordered, [key_ordered], [las_info['logs'][key_ordered]]
 
 
 # writing test

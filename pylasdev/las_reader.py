@@ -33,13 +33,20 @@ def read_las_file(filename, mnem_base = None):
 	ascii_logs_section = False
 	version_section = False
 
+	import chardet
+	encoding = "ascii"
+
 	while 1:
 
 		lines = file.readlines(100000)
-
 		if not lines:
 			break
 		for line in lines:
+			enc = chardet.detect(line)
+			enc =  enc.get("encoding")
+			if enc and enc.strip() != "ascii":
+				encoding = enc
+
 			line = line.lstrip()
 			if len(line) > 0:		# skipping empty line
 				if line[0] != '#':	# skipping comment line
@@ -57,6 +64,8 @@ def read_las_file(filename, mnem_base = None):
 						elif line[:2] == '~V':	# found the VERSION section
 							version_section = True
 	file.close()
+
+	#print encoding
 
 	# -- Second run
 
@@ -101,6 +110,12 @@ def read_las_file(filename, mnem_base = None):
 			break
 		for line in lines:
 			line = line.lstrip()
+			try:
+				line = line.decode(encoding) #.encode('utf-8')
+			except:
+				line
+				print encoding
+
 			if len(line) > 0 :	# empty line
 				if line[0] != '#':	# comment line
 				

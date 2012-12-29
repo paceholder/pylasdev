@@ -28,7 +28,7 @@ tokens = (
 	'SHARP'
 )
 
-t_SYMBOL = r'(?u)[_А-Яа-яa-zA-Z0-9\-]'
+t_SYMBOL = u'(?u)[_А-Яа-яa-zA-Z0-9\-]'
 t_DOT = r'\.'
 t_COLON = r':'
 t_WS = r'[\s\t]+'
@@ -62,11 +62,16 @@ def p_line(t):
 	if t[1] == None:	# empty line
 		pass
 
+	#print "NEW TOKEN t[1]", t[1]
 	if len(t) == 2:		# caption of the section
 		if(t[1][0] == '~'):
+			#print "\tNEW_LAST_CAPTION"
 			las_info['version']['last_caption'] = t[1]
 	
 	elif las_info['version']['last_caption'] == '~C': # curve section
+		#print "9-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+		#print "9-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+		#print t[2]
 		t[2] = re.sub("\s+", "", t[2])
 
 		if gmnem_base is not None:
@@ -74,6 +79,8 @@ def p_line(t):
 #				print "Curve name ", t[2], " founded in mnemonics database... Replacing with ", gmnem_base[ t[2] ]
 				t[2] = gmnem_base[ t[2] ]
 
+		#print "APPEND CURVE NAME!!!"
+		#print t[2]
 		las_info['curves_order'].append( t[2] )
 
 
@@ -102,9 +109,13 @@ def p_line(t):
 		t[4] = t[4].lstrip().rstrip()
 		if t[4] == ':':
 			# empty value case
-			las_info['parameters'][unicode(t[2])] = ''
+			#las_info['parameters'][unicode(t[2])] = ''
+			las_info['parameters'][t[2]] = ''
+			#las_info['parameters'][t[2].decode('utf-8')] = ''
 		else:
-			las_info['parameters'][unicode(t[2])] = t[4]
+			#las_info['parameters'][unicode(t[2])] = t[4]
+			las_info['parameters'][t[2]] = t[4]
+			#las_info['parameters'][t[2].decode('utf-8')] = t[4]
 
 	elif las_info['version']['last_caption'] == '~O': # other section
 		pass
@@ -190,8 +201,8 @@ def p_comment(t):
 		| WS 
 		| COLON
 		| SHARP
-	   comment : comment comment_symbol 
-			   | comment_symbol_1"""
+	comment : comment comment_symbol 
+		| comment_symbol_1"""
 	if len(t) == 3:
 		t[0] = t[1] + t[2]
 	else:
@@ -206,6 +217,9 @@ def p_empty(t):
 
 def p_caption(t):
 	'caption : TILD comment'
+	#print "CCAAAPTION"
+	#print t[1]
+	#print t[2]
 	t[0] = t[1] + t[2][0]
 
 def p_error(t):
